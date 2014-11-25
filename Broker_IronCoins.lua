@@ -1,9 +1,14 @@
-local IronCoins = CreateFrame("frame")
+local IronCoins = CreateFrame("frame", "IronCoins")
 IronCoins.obj = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("Broker_IronCoins", {
 	type = "data source",
 	text = "0",
     label = "Iron Coins",
-    icon  = "Interface\\Icons\\inv_misc_coin_09"
+    icon  = "Interface\\Icons\\inv_misc_coin_09",
+    OnClick = function(clickedframe, button)
+		if button == "LeftButton" then
+			IronCoins.UpdateInfo()
+		end
+	end
 })
 
 -- Set static variables
@@ -68,7 +73,7 @@ function IronCoins:LootValue()
 	end
 end
 
-IronCoins:SetScript("OnEvent", function()
+function IronCoins:UpdateInfo()
 	local coinInfo, currentCoins = GetCurrencyInfo(DINGY_IRON_COINS);
 	-- print(currentCoins .. " coins")
 	IronCoins:LootValue()
@@ -85,7 +90,11 @@ IronCoins:SetScript("OnEvent", function()
 	if whistleCooldown>0 then
 		IronCoins.obj.text = IronCoins.obj.text .. " | " .. whistCDMin+1 .. "min"
 	end
-end)
+end
+
+IronCoins:SetScript("OnEvent", function()
+	IronCoins:UpdateInfo()
+end )
 
 IronCoins:RegisterEvent("CURRENCY_DISPLAY_UPDATE")
 IronCoins:RegisterEvent("PLAYER_ENTERING_WORLD")

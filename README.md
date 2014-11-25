@@ -7,10 +7,10 @@ FEATURES
 --------
 
 * Shows the projected profit of your items
+* Click-to-refresh
 
 PLANNED FEATURES
 ----------------
 
 * Tooltip with a detailed breakdown of your projected profits
 * Display Options
-* Click-to-refresh
