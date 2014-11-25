@@ -8,11 +8,26 @@ IronCoins.obj = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("Broker_Ir
 		if button == "LeftButton" then
 			IronCoins.UpdateInfo()
 		end
-	end
+	end,
 })
 
 -- Set static variables
 local DINGY_IRON_COINS = 980
+local ITEM_ORDER = {
+	"SLIMY_RING",
+	"GLISTENING_RING",
+	"EMERALD_RING",
+	"DIAMOND_RING",
+	"OOZING_AMULET",
+	"SPARKLING_AMULET",
+	"RUBY_AMULET",
+	"OPAL_AMULET",
+	"LOCKET_OF_DREAMS",
+	"CHAIN_OF_HOPES",
+	"CHOKER_OF_NIGHTMARES",
+	"WAR_BEADS",
+	"GLOWING_IDOL"
+}
 local ITEMS_TO_FENCE = {
 	SLIMY_RING = 112995,
 	GLISTENING_RING = 112996,
@@ -42,6 +57,21 @@ local FENCE_VALUE = {
 	CHOKER_OF_NIGHTMARES = 18,
 	WAR_BEADS = 20,
 	GLOWING_IDOL = 20,
+}
+local ITEM_TEXTURE = {
+	SLIMY_RING = 'inv_jewelry_ring_12',
+	GLISTENING_RING = 'inv_jewelry_ring_60',
+	EMERALD_RING = 'inv_jewelry_ring_08',
+	DIAMOND_RING = 'inv_jewelry_ring_94',
+	OOZING_AMULET= 'inv_jewelry_necklace_ahnqiraj_03',
+	SPARKLING_AMULET = 'inv_jewelry_amulet_02',
+	RUBY_AMULET = 'inv_jewelry_necklace_103',
+	OPAL_AMULET = 'inv_jewelry_necklace_55',
+	LOCKET_OF_DREAMS = 'inv_jewelry_necklace_26',
+	CHAIN_OF_HOPES = 'inv_misc_thornnecklace',
+	CHOKER_OF_NIGHTMARES = 'inv_jewelry_necklace_33',
+	WAR_BEADS = 'inv_jewelry_necklace_02',
+	GLOWING_IDOL = 'inv_misc_trinket6oog_idol3',
 }
 local SECRETIVE_WHISTLE = 113575
 
@@ -92,6 +122,39 @@ function IronCoins:UpdateInfo()
 	end
 end
 
+-------------
+-- TOOLTIP --
+-------------
+
+local LibQTip = LibStub('LibQTip-1.0')
+
+function IronCoins.obj:OnEnter()
+	local tooltip = LibQTip:Acquire("Broker_IronCoinsTooltip", 3, "LEFT", "LEFT", "RIGHT")
+	self.tooltip = tooltip
+
+	tooltip:AddHeader('Broker_IronCoins')
+	tooltip:AddLine('|TInterface\\Icons\\inv_misc_coin_09:0|t Test','kek','bur')
+	for k, iname in ipairs(ITEM_ORDER) do
+		local quant = itemCounts[iname]
+		local val = FENCE_VALUE[iname]
+		local name, link, quality, iLevel, reqLevel, class, subclass, maxStack, equipSlot, texture = GetItemInfo(ITEMS_TO_FENCE[iname])
+		--print(GetItemInfo(ITEMS_TO_FENCE[iname]))
+		if name == nil then
+			-- print(iname.." not in itemcache")
+			tooltip:AddLine(quant..'x |TInterface\\Icons\\'..ITEM_TEXTURE[iname]..':0|t'..iname)
+		else
+			tooltip:AddLine(quant..'x |T'..texture..':0|t'..name)
+		end
+	end
+
+	tooltip:SmartAnchorTo(self)
+	tooltip:Show()
+end
+
+function IronCoins.obj:OnLeave()
+	LibQTip:Release(self.tooltip)
+	self.tooltip = nil
+end
 IronCoins:SetScript("OnEvent", function()
 	IronCoins:UpdateInfo()
 end )
