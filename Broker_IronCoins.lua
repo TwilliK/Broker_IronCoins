@@ -131,22 +131,26 @@ local LibQTip = LibStub('LibQTip-1.0')
 function IronCoins.obj:OnEnter()
 	local tooltip = LibQTip:Acquire("Broker_IronCoinsTooltip", 3, "LEFT", "LEFT", "RIGHT")
 	self.tooltip = tooltip
+	local coinInfo, currentCoins = GetCurrencyInfo(DINGY_IRON_COINS);
 
-	tooltip:AddHeader('Broker_IronCoins')
-	tooltip:AddLine('|TInterface\\Icons\\inv_misc_coin_09:0|t Test','kek','bur')
+	--tooltip:AddHeader('Broker_IronCoins')
+	tooltip:AddLine('|TInterface\\Icons\\inv_misc_coin_09:0|t Inital Coins','',currentCoins)
 	for k, iname in ipairs(ITEM_ORDER) do
 		local quant = itemCounts[iname]
 		local val = FENCE_VALUE[iname]
+		local sum = quant * val
 		local name, link, quality, iLevel, reqLevel, class, subclass, maxStack, equipSlot, texture = GetItemInfo(ITEMS_TO_FENCE[iname])
-		--print(GetItemInfo(ITEMS_TO_FENCE[iname]))
 		if name == nil then
 			-- print(iname.." not in itemcache")
-			tooltip:AddLine(quant..'x |TInterface\\Icons\\'..ITEM_TEXTURE[iname]..':0|t'..iname)
+			tooltip:AddLine('|TInterface\\Icons\\'..ITEM_TEXTURE[iname]..':0|t '..iname, quant..' @ '..val..'ea', sum)
 		else
-			tooltip:AddLine(quant..'x |T'..texture..':0|t'..name)
+			r, g, b, hex = GetItemQualityColor(quality)
+			tooltip:AddLine('|T'..texture..':0|t |c'..hex..name, quant..' @ '..val..'ea', sum)
 		end
 	end
-
+	tooltip:AddLine('|TInterface\\Icons\\inv_misc_coin_09:0|t Projected Gain','',fluidCoins);
+	tooltip:AddSeparator();
+	tooltip:AddLine('|TInterface\\Icons\\inv_misc_coin_09:0|t Total Coins','',currentCoins+fluidCoins);
 	tooltip:SmartAnchorTo(self)
 	tooltip:Show()
 end
