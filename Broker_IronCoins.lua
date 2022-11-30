@@ -104,7 +104,9 @@ function IronCoins:LootValue()
 end
 
 function IronCoins:UpdateInfo()
-	local coinInfo, currentCoins = GetCurrencyInfo(DINGY_IRON_COINS);
+	local coinTable = C_CurrencyInfo.GetCurrencyInfo(DINGY_IRON_COINS);
+	local coinInfo = coinTable['name'];
+	local currentCoins = coinTable['quantity'];
 	-- print(currentCoins .. " coins")
 	IronCoins:LootValue()
 	IronCoins.obj.text = currentCoins
@@ -131,7 +133,9 @@ local LibQTip = LibStub('LibQTip-1.0')
 function IronCoins.obj:OnEnter()
 	local tooltip = LibQTip:Acquire("Broker_IronCoinsTooltip", 3, "LEFT", "LEFT", "RIGHT")
 	self.tooltip = tooltip
-	local coinInfo, currentCoins = GetCurrencyInfo(DINGY_IRON_COINS);
+	local coinTable = C_CurrencyInfo.GetCurrencyInfo(DINGY_IRON_COINS);
+	local coinInfo = coinTable['name'];
+	local currentCoins = coinTable['quantity'];
 
 	--tooltip:AddHeader('Broker_IronCoins')
 	tooltip:AddLine('|TInterface\\Icons\\inv_misc_coin_09:0|t Inital Coins','',currentCoins)

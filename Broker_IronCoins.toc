@@ -1,8 +1,8 @@
-﻿## Interface: 60000
+﻿## Interface: 100002
 ## Title: Broker: Iron Coins
 ## X-BrokerName: Iron Coins
 ## Author: Twill (Selite of Aman'Thul (Oceanic))
-## Version:  0.1.0
+## Version:  1.0.10
 
 ## Notes: LDB display for Dingy Iron Coins and projected profits (and whistle CD tracking).
 
